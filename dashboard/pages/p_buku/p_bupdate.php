@@ -1,6 +1,6 @@
 <?php 
 if (!isset($_POST['btn-submit'])) {
-    header('location: ../../index.php');
+    header('location: ../../index.php?page=b_data');
     exit();
 }
 
@@ -31,22 +31,27 @@ if ($bahasa == '') $_SESSION['msg']['bahasa'] = "Pilih Bahasa!";
 if ($sinopsis == '') $_SESSION['msg']['sinopsis'] = "Kolom Sinopsis Tidak Boleh Kosong!";
 if ($cover['error'] === UPLOAD_ERR_NO_FILE) $_SESSION['msg']['cover'] = "Upload Cover Buku!";
 
+// if (isset($_SESSION['msg'])) {
+//     header("location: ../../index.php?page=b_input_update&kode=' . $kode");
+//     exit();
+// }
+
 
 // Menghubungkan ke database
 include('../../components/koneksi.php');
 
 // Validasi data duplikat berdasarkan kode buku
-$query = "SELECT * FROM buku WHERE kode = '$kode'";
+$query = "SELECT * FROM buku WHERE isbn='$isbn' AND kode !='kode'";
 $result = mysqli_query($koneksi, $query);
-if (mysqli_num_rows($q) != 0) {
-    $_SESSION['msg']['error'] = "Data anggota dengan nama, nohp, email, atau alamat yang sama sudah ada";
-    header('location: ../../index.php?page=p_bupdate&kode=' . $kode);
+if (mysqli_num_rows($result) != 0) {
+    $_SESSION['msg']['error'] = "Data buku dengan isbn yang sama sudah ada";
+    header('location: ../../index.php?page=b_input_update&kode=' . $kode);
     exit();
 }
 
 if (mysqli_num_rows($result) > 0) {
     $_SESSION['msg']['error'] = "Data buku dengan kode ini sudah ada.";
-    header('location: ../../index.php?page=p_bupdate&kode=' . $kode);
+    header('location: ../../index.php?page=b_input_update&kode=' . $kode);
     exit();
 }
 
@@ -59,11 +64,12 @@ if (move_uploaded_file($file_tmp, $targetFilePath)) {
     $query = "UPDATE buku SET isbn = '$isbn', tahun = '$tahun', judul = '$judul', nama = '$nama', penerbit = '$penerbit', kategori = '$kategori', bahasa = '$bahasa', sinopsis = '$sinopsis', cover = '$namaFile' WHERE kode = '$kode'";
         if (mysqli_query($koneksi, $query)) {
         $_SESSION['msg']['success'] = "Data buku berhasil diperbarui.";
+        header('location: ../../index.php?page=b_data'); 
+        exit(); 
     } else {
         $_SESSION['msg']['error'] = "Gagal memperbarui data buku: " . mysqli_error($koneksi);
+        header('location: ../../index.php?page=b_data'); 
     }
 }
 
-header('location: ../../index.php?page=b_data');
-exit();
 ?>

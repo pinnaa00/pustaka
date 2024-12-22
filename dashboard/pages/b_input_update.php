@@ -130,7 +130,7 @@ $data = mysqli_fetch_array($q);
                             </div>
                             <div class="row mt-4">
                                 <div class="col-lg-12 text-end">
-                                    <button type="submit" class="btn btn-primary me-2">Submit</button>
+                                    <button type="submit" name="btn-submit" class="btn btn-primary me-2">Submit</button>
                                     <button type="reset" class="btn btn-secondary">Reset</button>
                                 </div>
                             </div>

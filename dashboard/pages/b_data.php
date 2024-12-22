@@ -37,6 +37,7 @@
                                     <th>Kategori</th>
                                     <th>Bahasa</th>
                                     <th>Cover</th>
+                                    <th>Sinopsis</th> ga sekalian transaksi? aowkwkkw masih mikir caranya
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -64,6 +65,7 @@
                                         <img src="assets/images/<?= $data['cover'] ?>" alt="Cover"
                                             style="width: 100px; height: auto;">
                                     </td>
+                                    <td><?= $data['sinopsis'] ?></td>
                                     <td>
                                         <a href="pages/p_buku/p_bdelete.php?kode=<?= $data['kode'] ?>"
                                             onclick="return confirm('Anda yakin menghapus data ini?')">
