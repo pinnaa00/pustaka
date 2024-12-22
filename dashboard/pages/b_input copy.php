@@ -1,14 +1,3 @@
-<?php
-include('components/koneksi.php'); // Pastikan koneksi sudah benar
-
-// Query untuk mengambil data penerbit
-$queryPenerbit = "SELECT kode, nama FROM penerbit";
-$selectPenerbit = mysqli_query($koneksi, $queryPenerbit);
-
-// Query untuk mengambil data kategori
-$queryKategori = "SELECT kode, nama FROM kategori";
-$selectKategori = mysqli_query($koneksi, $queryKategori);
-?>
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
@@ -148,13 +137,13 @@ $selectKategori = mysqli_query($koneksi, $queryKategori);
                         </div>
                         <div class="row mt-4">
                             <div class="col-lg-12 text-end">
-                                <button type="submit" name="btn-submit" class="btn btn-primary me-2">Submit</button>
+                                <button type="submit" class="btn btn-primary me-2">Submit</button>
                                 <button type="reset" class="btn btn-secondary">Reset</button>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
-        </div><?php unset($_SESSION['msg']);?>
+        </div>
     </div>
 </div>

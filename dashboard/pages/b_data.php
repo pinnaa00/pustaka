@@ -1,76 +1,91 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">DATA PENERBIT</h1>
+            <h1 class="page-header">DATA BUKU</h1>
         </div>
-        <!-- /.col-lg-12 -->
     </div>
-    <!-- /.row -->
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
-                <!-- BIKIN TEBEL RESPONSIF -->
                 <div class="panel-heading">
-                    DATA PENERBIT
+                    DATA BUKU
                 </div>
-                <!-- /.panel-heading -->
                 <div class="panel-body">
                     <div class="table-responsive">
+                        <!-- Tampilkan pesan sukses jika ada -->
+                        <?php 
+                            if(isset($_SESSION['msg']['success'])){
+                                echo '
+                                    <div class="alert alert-success" role="alert">
+                                        '.$_SESSION['msg']['success'].'
+                                    </div>
+                                ';
+                            }
+                        ?>
+
+                        <!-- Tabel data -->
                         <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                             <thead>
                                 <tr>
-                                    <th>KODE</th>
+                                    <th>No</th>
+                                    <th>Kode</th>
                                     <th>ISBN</th>
-                                    <th>TAHUN</th>
-                                    <th>JUDUL</th>
-                                    <th>NAMA PENULIS</th>
-                                    <th>PENERBIT</th>
-                                    <th>KATEGORI</th>
-                                    <th>BAHASA</th>
-                                    <th>COVER</th>
-                                    <th>SINOPSIS</th>
+                                    <th>Tahun</th>
+                                    <th>Judul</th>
+                                    <th>Penulis</th>
+                                    <th>Penerbit</th>
+                                    <th>Kategori</th>
+                                    <th>Bahasa</th>
+                                    <th>Cover</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="odd gradeX">
-                                    <td>Trident</td>
-                                    <td>Internet Explorer 4.0</td>
-                                    <td>Win 95+</td>
-                                    <td class="center">4</td>
-                                    <td class="center">X</td>
-                                    <td>Trident</td>
-                                    <td>Internet Explorer 4.0</td>
-                                    <td>Win 95+</td>
-                                    <td class="center">4</td>
-                                    <td class="center">X</td>
+                                <?php 
+                                include('components/koneksi.php');
+                                $query = "SELECT * FROM buku";
+                                $q = mysqli_query($koneksi, $query);
+                                $no = 1;
+
+                                // if (mysqli_num_rows($q) > 0) {
+                                    while ($data = mysqli_fetch_array($q)) {
+                                ?>
+                                <tr>
+                                    <th scope="row"><?= $no++ ?></th>
+                                    <td><?= $data['kode'] ?></td>
+                                    <td><?= $data['isbn'] ?></td>
+                                    <td><?= $data['tahun'] ?></td>
+                                    <td><?= $data['judul'] ?></td>
+                                    <td><?= $data['nama'] ?></td>
+                                    <td><?= $data['penerbit'] ?></td>
+                                    <td><?= $data['kategori'] ?></td>
+                                    <td><?= $data['bahasa'] == 1 ? 'Bahasa Indonesia' : 'Bahasa Inggris' ?></td>
+                                    <td>
+                                        <img src="assets/images/<?= $data['cover'] ?>" alt="Cover"
+                                            style="width: 100px; height: auto;">
+                                    </td>
+                                    <td>
+                                        <a href="pages/p_buku/p_bdelete.php?kode=<?= $data['kode'] ?>"
+                                            onclick="return confirm('Anda yakin menghapus data ini?')">
+                                            <i class="fa fa-trash text-danger"></i>
+                                        </a> |
+                                        <a href="?page=b_input_update&kode=<?= $data['kode'] ?>">
+                                            <i class="fa fa-pencil-square-o text-primary"></i>
+                                        </a>
+                                    </td>
                                 </tr>
-                                <tr class="even gradeC">
-                                    <td>Trident</td>
-                                    <td>Internet Explorer 5.0</td>
-                                    <td>Win 95+</td>
-                                    <td class="center">5</td>
-                                    <td class="center">C</td>
-                                    <td>Trident</td>
-                                    <td>Internet Explorer 4.0</td>
-                                    <td>Win 95+</td>
-                                    <td class="center">4</td>
-                                    <td class="center">X</td>
-                                </tr>
-                                <tr class="gradeA">
-                                    <td>Gecko</td>
-                                    <td>Firefox 3.0</td>
-                                    <td>Win 2k+ / OSX.3+</td>
-                                    <td class="center">1.9</td>
-                                    <td class="center">A</td>
-                                    <td>Trident</td>
-                                    <td>Internet Explorer 4.0</td>
-                                    <td>Win 95+</td>
-                                    <td class="center">4</td>
-                                    <td class="center">X</td>
-                                </tr>
+                                <?php 
+                                
+                                }
+                                ?>
                             </tbody>
                         </table>
                     </div>
-                    <!-- /.table-responsive -->
                 </div>
-                <!-- /.panel-body -->
+            </div>
+        </div>
+    </div>
+</div>
+<?php 
+unset($_SESSION['msg']);
+?>
