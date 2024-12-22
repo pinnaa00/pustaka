@@ -1,82 +1,69 @@
-<?php
+<?php 
 if (!isset($_POST['btn-submit'])) {
     header('location: ../../index.php');
     exit();
 }
 
 // Mengambil data dari form
-$nik = $_POST['nik'];
+$kode = $_POST['kode'];
+$isbn = $_POST['isbn'];
+$tahun = $_POST['tahun'];
+$judul = $_POST['judul'];
 $nama = $_POST['nama'];
-$nohp = $_POST['nohp'];
-$email = $_POST['email'];
-$alamat = $_POST['alamat'];
-$foto = $_FILES['foto'];
+$penerbit = $_POST['penerbit'];
+$kategori = $_POST['kategori'];
+$bahasa = $_POST['bahasa'];
+$sinopsis = $_POST['sinopsis'];
+$cover = $_FILES['cover'];
+$file_tmp = $cover['tmp_name'];
 
 session_start();
 
-// Validasi jika kosong
-if ($nik == '') {
-    $_SESSION['msg']['nik'] = "Kolom Tidak Boleh Kosong!";
-}
-if ($nama == '') {
-    $_SESSION['msg']['nama'] = "Kolom Tidak Boleh Kosong!";
-}
-if ($nohp == '') {
-    $_SESSION['msg']['nohp'] = "Kolom Tidak Boleh Kosong!";
-}
-if ($email == '') {
-    $_SESSION['msg']['email'] = "Kolom Tidak Boleh Kosong!";
-}
-if ($alamat == '') {
-    $_SESSION['msg']['alamat'] = "Kolom Tidak Boleh Kosong!";
-}
+// Validasi input kosong
+if ($kode == '') $_SESSION['msg']['kode'] = "Kolom Kode Buku Tidak Boleh Kosong!";
+if ($isbn == '') $_SESSION['msg']['isbn'] = "Kolom ISBN Tidak Boleh Kosong!";
+if ($tahun == '') $_SESSION['msg']['tahun'] = "Kolom Tahun Tidak Boleh Kosong!";
+if ($judul == '') $_SESSION['msg']['judul'] = "Kolom Judul Tidak Boleh Kosong!";
+if ($nama == '') $_SESSION['msg']['nama'] = "Kolom Nama Penulis Tidak Boleh Kosong!";
+if ($penerbit == '') $_SESSION['msg']['penerbit'] = "Pilih Penerbit!";
+if ($kategori == '') $_SESSION['msg']['kategori'] = "Pilih Kategori!";
+if ($bahasa == '') $_SESSION['msg']['bahasa'] = "Pilih Bahasa!";
+if ($sinopsis == '') $_SESSION['msg']['sinopsis'] = "Kolom Sinopsis Tidak Boleh Kosong!";
+if ($cover['error'] === UPLOAD_ERR_NO_FILE) $_SESSION['msg']['cover'] = "Upload Cover Buku!";
 
-// Validasi jika foto kosong
-if ($foto['error'] == UPLOAD_ERR_NO_FILE) {
-    $_SESSION['msg']['foto'] = "Kolom Foto Tidak Boleh Kosong!";
-}
 
-// Jika ada error, kembali ke halaman sebelumnya
-if (!empty($_SESSION['msg'])) {
-    header('location: ../../index.php?page=p_aupdate&nik=' . $nik);
-    exit();
-}
-
+// Menghubungkan ke database
 include('../../components/koneksi.php');
 
-// Validasi jika data sudah ada
-$query = "SELECT * FROM anggota WHERE nama='$nama' AND nohp='$nohp' AND email='$email' AND alamat='$alamat' AND nik != '$nik'";
-$q = mysqli_query($koneksi, $query);
+// Validasi data duplikat berdasarkan kode buku
+$query = "SELECT * FROM buku WHERE kode = '$kode'";
+$result = mysqli_query($koneksi, $query);
 if (mysqli_num_rows($q) != 0) {
     $_SESSION['msg']['error'] = "Data anggota dengan nama, nohp, email, atau alamat yang sama sudah ada";
-    header('location: ../../index.php?page=p_aupdate&nik=' . $nik);
+    header('location: ../../index.php?page=p_bupdate&kode=' . $kode);
     exit();
 }
 
-//  jika pakai foto yang baru
-$namaFile = $foto['name']; // Nama file foto yang diupload
+if (mysqli_num_rows($result) > 0) {
+    $_SESSION['msg']['error'] = "Data buku dengan kode ini sudah ada.";
+    header('location: ../../index.php?page=p_bupdate&kode=' . $kode);
+    exit();
+}
+
+// Memindahkan file cover
+$namaFile = basename($cover['name']); // Menggunakan nama file asli
 $targetFilePath = '../../assets/images/' . $namaFile;
 
-// Jika foto baru
-if ($foto['error'] == UPLOAD_ERR_OK) {
-    move_uploaded_file($foto['tmp_name'], $targetFilePath);
-} else {
-    // Jika tidak ada foto baru, PAKE foto lama
-    $query = "SELECT foto FROM anggota WHERE nik='$nik'";
-    $result = mysqli_query($koneksi, $query);
-    if ($row = mysqli_fetch_assoc($result)) {
-        $namaFile = $row['foto']; // Ambil foto lama jika tidak ada foto baru
+if (move_uploaded_file($file_tmp, $targetFilePath)) {
+    // Menyimpan data ke database
+    $query = "UPDATE buku SET isbn = '$isbn', tahun = '$tahun', judul = '$judul', nama = '$nama', penerbit = '$penerbit', kategori = '$kategori', bahasa = '$bahasa', sinopsis = '$sinopsis', cover = '$namaFile' WHERE kode = '$kode'";
+        if (mysqli_query($koneksi, $query)) {
+        $_SESSION['msg']['success'] = "Data buku berhasil diperbarui.";
+    } else {
+        $_SESSION['msg']['error'] = "Gagal memperbarui data buku: " . mysqli_error($koneksi);
     }
 }
 
-// Update data anggota
-$query = "UPDATE anggota SET nama='$nama', nohp='$nohp', email='$email', alamat='$alamat', foto='$namaFile' WHERE nik='$nik'";
-if (mysqli_query($koneksi, $query)) {
-    $_SESSION['msg']['success'] = "Data anggota berhasil diupdate.";
-} else {
-    $_SESSION['msg']['error'] = "Gagal mengupdate data anggota.";
-}
-
-header('location: ../../index.php?page=a_data');
+header('location: ../../index.php?page=b_data');
 exit();
 ?>

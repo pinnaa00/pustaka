@@ -1,13 +1,12 @@
 <?php
-include('components/koneksi.php'); // Pastikan koneksi sudah benar
+include('components/koneksi.php'); 
+//untuk mengambil data penerbit
+$penerbit = "SELECT * FROM penerbit";
+$selectPenerbit = mysqli_query($koneksi, $penerbit);
 
-// Query untuk mengambil data penerbit
-$queryPenerbit = "SELECT kode, nama FROM penerbit";
-$selectPenerbit = mysqli_query($koneksi, $queryPenerbit);
-
-// Query untuk mengambil data kategori
-$queryKategori = "SELECT kode, nama FROM kategori";
-$selectKategori = mysqli_query($koneksi, $queryKategori);
+//untuk mengambil data kategori
+$kategori = "SELECT * FROM kategori";
+$selectKategori = mysqli_query($koneksi, $kategori);
 ?>
 <div class="container-fluid">
     <div class="row">
@@ -117,8 +116,8 @@ $selectKategori = mysqli_query($koneksi, $queryKategori);
                                 <div class="form-group">
                                     <label>BAHASA</label>
                                     <select class="form-control" name="bahasa">
-                                        <option value="1">Bahasa Indonesia</option>
-                                        <option value="2">Bahasa Inggris</option>
+                                        <option value="Bahasa Indonesia">Bahasa Indonesia</option>
+                                        <option value="Bahasa Inggris">Bahasa Inggris</option>
                                     </select>
                                     <?php
                                     if (isset($_SESSION['msg']['bahasa'])) {

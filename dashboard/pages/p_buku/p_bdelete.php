@@ -1,11 +1,11 @@
 <?php 
 
-$nik = $_REQUEST['nik'];
+$kode = $_REQUEST['kode'];
 
 include('../../components/koneksi.php');
 
-$query = "DELETE FROM anggota WHERE nik='$nik'";
+$query = "DELETE FROM buku WHERE kode='$kode'";
 mysqli_query($koneksi, $query);
 session_start();
-$_SESSION['msg']['success'] = "Data anggota ".$nik." berhasil dihapus";
-header('location:../../index.php?page=a_data');
+$_SESSION['msg']['success'] = "Data buku ".$kode." berhasil dihapus";
+header('location:../../index.php?page=b_data');
