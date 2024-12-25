@@ -62,7 +62,7 @@
                                     <td><?= $data['kategori'] ?></td>
                                     <td><?= $data['bahasa'] == 1 ? 'Bahasa Indonesia' : 'Bahasa Inggris' ?></td>
                                     <td>
-                                        <img src="assets/images/<?= $data['cover'] ?>" alt="Cover"
+                                        <img src="pages/p_buku/image<?= $data['cover'] ?>" alt="Cover"
                                             style="width: 100px; height: auto;">
                                     </td>
                                     <td><?= $data['sinopsis'] ?></td>

@@ -31,10 +31,10 @@ if ($bahasa == '') $_SESSION['msg']['bahasa'] = "Pilih Bahasa!";
 if ($sinopsis == '') $_SESSION['msg']['sinopsis'] = "Kolom Sinopsis Tidak Boleh Kosong!";
 if ($cover['error'] === UPLOAD_ERR_NO_FILE) $_SESSION['msg']['cover'] = "Upload Cover Buku!";
 
-// if (isset($_SESSION['msg'])) {
-//     header("location: ../../index.php?page=b_input_update&kode=' . $kode");
-//     exit();
-// }
+if (!empty($_SESSION['msg'])) {
+    header("location: ../../index.php?page=b_input_update&kode=' . $kode");
+    exit();
+}
 
 
 // Menghubungkan ke database
@@ -57,9 +57,9 @@ if (mysqli_num_rows($result) > 0) {
 
 // Memindahkan file cover
 $namaFile = basename($cover['name']); // Menggunakan nama file asli
-$targetFilePath = '../../assets/images/' . $namaFile;
-
+$targetFilePath = 'image' . $namaFile;
 if (move_uploaded_file($file_tmp, $targetFilePath)) {
+
     // Menyimpan data ke database
     $query = "UPDATE buku SET isbn = '$isbn', tahun = '$tahun', judul = '$judul', nama = '$nama', penerbit = '$penerbit', kategori = '$kategori', bahasa = '$bahasa', sinopsis = '$sinopsis', cover = '$namaFile' WHERE kode = '$kode'";
         if (mysqli_query($koneksi, $query)) {
