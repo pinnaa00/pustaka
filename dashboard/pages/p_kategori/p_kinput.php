@@ -18,7 +18,7 @@ if($kode == '') {
 if($nama == '') {
     $_SESSION['msg']['nama'] = "Kolom Tidak Boleh Kosong!";
 }
-if (isset($_SESSION['msg'] ['kode']) || isset($_SESSION['msg'] ['nama'])){
+if (isset($_SESSION['msg'])){
     header('location: ../../index.php?page=k_input');
     exit();
 }

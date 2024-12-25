@@ -1,5 +1,6 @@
 <!-- jika button submit ditekan  -->
 <?php
+session_start();
 if(!isset($_POST['btn-submit'])){
     header('location: ../../index.php');
     exit();
@@ -10,7 +11,6 @@ $kode = $_POST['kode'];
 $nama = $_POST['nama'];
 $alamat = $_POST['alamat'];
 
-session_start();
 
 // validasi jika  kosong 
 if($kode == '') {
@@ -22,7 +22,8 @@ if($nama == '') {
 if($alamat == '') {
     $_SESSION['msg']['alamat'] = "Kolom Tidak Boleh Kosong!";
 }
-if (isset($_SESSION['msg'] ['kode']) || isset($_SESSION['msg'] ['nama'])|| isset($_SESSION['msg'] ['alamat'])){
+
+if (isset($_SESSION['msg'])){
     header('location: ../../index.php?page=p_input');
     exit();
 }
@@ -30,7 +31,7 @@ if (isset($_SESSION['msg'] ['kode']) || isset($_SESSION['msg'] ['nama'])|| isset
 // memnguhubungkan ke data bases
 include('../../components/koneksi.php');
 
-$sql = "SELECT * FROM publisher WHERE kode='$kode' OR name='$name'";
+$query = "SELECT * FROM penerbit WHERE kode='$kode' OR nama='$nama'";
 $q = mysqli_query($koneksi, $query); //menangkap ke data base
 if(mysqli_num_rows($q)!=0){ // msg untuk data yg sudah ada
     $_SESSION['msg']['error'] = "Data penerbit sudah ada, periksa kode atau nama yang sama";
