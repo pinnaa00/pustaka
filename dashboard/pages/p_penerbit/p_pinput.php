@@ -30,7 +30,7 @@ if (isset($_SESSION['msg'] ['kode']) || isset($_SESSION['msg'] ['nama'])|| isset
 // memnguhubungkan ke data bases
 include('../../components/koneksi.php');
 
-$query = "SELECT * FROM penerbit WHERE kode='$kode' OR nama='$nama'OR alamat='$alamat' ";  // menampilkan tabel kategori di datasbase
+$sql = "SELECT * FROM publisher WHERE kode='$kode' OR name='$name'";
 $q = mysqli_query($koneksi, $query); //menangkap ke data base
 if(mysqli_num_rows($q)!=0){ // msg untuk data yg sudah ada
     $_SESSION['msg']['error'] = "Data penerbit sudah ada, periksa kode atau nama yang sama";

@@ -37,7 +37,7 @@
                                     <th>Kategori</th>
                                     <th>Bahasa</th>
                                     <th>Cover</th>
-                                    <th>Sinopsis</th> ga sekalian transaksi? aowkwkkw masih mikir caranya
+                                    <th>Sinopsis</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>

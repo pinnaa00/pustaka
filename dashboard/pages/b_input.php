@@ -154,6 +154,7 @@ $selectKategori = mysqli_query($koneksi, $kategori);
                     </form>
                 </div>
             </div>
-        </div><?php unset($_SESSION['msg']);?>
+        </div>
     </div>
 </div>
+<?php unset($_SESSION['msg']);?>

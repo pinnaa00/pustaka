@@ -112,14 +112,9 @@ $data = mysqli_fetch_array($q);
                                 </div>
                                 <div class="form-group">
                                     <label>Cover</label>
-                                    <input type="file" name="cover">
-                                    <?php if (!empty($data['cover'])): ?>
-                                    <div>
-                                        <img src="assets/images/<?= $data['cover'] ?>" alt="Cover"
-                                            style="width: 100px; height: auto;">
-                                    </div>
-                                    <?php endif; ?>
-                                    <?php if (isset($_SESSION['msg']['cover'])) echo '<div class="text-danger">' . $_SESSION['msg']['cover'] . '</div>'; ?>
+                                    <img src="assets/images/<?= $data['cover'] ?>" alt="cover"
+                                        style="width: 100px; height: auto;">
+                                    <input value="<?= $data['cover']?>" name="cover" type="file" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">

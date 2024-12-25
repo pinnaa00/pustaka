@@ -28,7 +28,7 @@ if(isset($_SESSION['msg']['err_nama'])){
 }
 
 include('../../components/koneksi.php'); //blom 2 test 
-$query = "SELECT * FROM penerbit WHERE nama='$nama'AND alamat='$alamat' AND kode != 'kode' ";  // menampilkan tabel kategori di datasbase
+$query = "SELECT * FROM penerbit WHERE nama='$nama'AND alamat='$alamat' AND kode != '$kode' ";  // menampilkan tabel kategori di datasbase
 $q = mysqli_query($koneksi, $query);
 if(mysqli_num_rows($q)!=0){
     $_SESSION['msg']['error'] = "Data kategori sudah ada, periksa kode atau nama yang sama";
