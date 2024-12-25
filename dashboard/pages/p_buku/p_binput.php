@@ -56,7 +56,7 @@ if (mysqli_num_rows($result) > 0) {
 
 // Memindahkan file cover
 $namaFile = basename($cover['name']); // Menggunakan nama file asli
-$targetFilePath = 'image' . $namaFile;
+$targetFilePath = 'image/' . $namaFile;
 
 if (move_uploaded_file($file_tmp, $targetFilePath)) {
     // Menyimpan data ke database

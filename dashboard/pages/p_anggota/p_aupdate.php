@@ -55,7 +55,7 @@ if (mysqli_num_rows($q) != 0) {
 
 //  jika pakai foto yang baru
 $namaFile = $foto['name']; // Nama file foto yang diupload
-$targetFilePath = '../../assets/images/' . $namaFile;
+$targetFilePath = 'image/' . $namaFile;
 
 // Jika foto baru
 if ($foto['error'] == UPLOAD_ERR_OK) {

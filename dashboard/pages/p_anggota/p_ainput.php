@@ -34,7 +34,7 @@ include('../../components/koneksi.php');
 
 // Memindahkan file foto
 $namaFile = $foto['name']; // Menggunakan nama file asli
-$targetFilePath = '../../assets/images/' . $namaFile;
+$targetFilePath = 'image/' . $namaFile;
 move_uploaded_file($file_tmp, $targetFilePath);
 
 // Validasi duplikasi data

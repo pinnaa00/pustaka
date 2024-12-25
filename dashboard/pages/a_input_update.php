@@ -48,15 +48,15 @@ $data = mysqli_fetch_array($q);
                                 </div>
                                 <div class="form-group">
                                     <label>No Hp</label>
-                                    <input readonly value="<?= $data['nohp']?>" name="nohp" type="number"
-                                        class="form-control" placeholder="Masukkan Number">
+                                    <input value="<?= $data['nohp']?>" name="nohp" type="number" class="form-control"
+                                        placeholder="Masukkan Number">
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>EMAIL</label>
-                                    <input readonly value="<?= $data['email']?>" name="email" type="email"
-                                        class="form-control" placeholder="Masukkan Email">
+                                    <input value="<?= $data['email']?>" name="email" type="email" class="form-control"
+                                        placeholder="Masukkan Email">
                                     <?php 
                                         if(isset($_SESSION['msg']['err_nama'])){
                                             echo '<span class="text-danger">'.$_SESSION['msg']['err_nama'].'</span>';
@@ -70,7 +70,7 @@ $data = mysqli_fetch_array($q);
                                 </div>
                                 <div class="form-group">
                                     <label>FOTO</label>
-                                    <img src="assets/images/<?= $data['foto'] ?>" alt="Foto"
+                                    <img src="pages/p_anggota/image/<?= $data['foto'] ?>" alt="Foto"
                                         style="width: 100px; height: auto;">
                                     <input value="<?= $data['foto']?>" name="foto" type="file" class="form-control">
                                 </div>

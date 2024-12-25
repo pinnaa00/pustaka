@@ -51,7 +51,7 @@
                                 <td><?= $data['nohp'] ?></td>
                                 <td><?= $data['email'] ?></td>
                                 <td><?= $data['alamat'] ?></td>
-                                <td><img src="assets/images/<?= $data['foto'] ?>" alt="Foto"
+                                <td><img src="pages/p_anggota/image/<?= $data['foto'] ?>" alt="Foto"
                                         style="width: 100px; height: auto;"></td>
                                 <td>
                                     <a href="pages/p_anggota/p_adelete.php?nik=<?= $data['nik'] ?>"
