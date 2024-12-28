@@ -1,4 +1,5 @@
 <?php
+session_start();
 if (!isset($_POST['btn-submit'])) {
     header('location: ../../index.php');
     exit();
@@ -12,7 +13,6 @@ $email = $_POST['email'];
 $alamat = $_POST['alamat'];
 $foto = $_FILES['foto'];
 
-session_start();
 
 // Validasi jika kosong
 if ($nik == '') {

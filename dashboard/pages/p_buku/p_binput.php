@@ -54,22 +54,33 @@ if (mysqli_num_rows($result) > 0) {
     exit();
 }
 
-// Memindahkan file cover
-$namaFile = basename($cover['name']); // Menggunakan nama file asli
+// Validasi dan proses file cover
+$ekstensiValid = ['jpg', 'jpeg', 'png'];
+$ekstensiFile = strtolower(pathinfo($cover['name'], PATHINFO_EXTENSION));
+if (!in_array($ekstensiFile, $ekstensiValid)) {
+    $_SESSION['msg']['error'] = "Format file cover tidak valid. Hanya JPG, JPEG, dan PNG yang diperbolehkan.";
+    header('location: ../../index.php?page=b_input');
+    exit();
+}
+
+// Generate nama file unik untuk cover baru
+$namaFile = md5(time() . $cover['name']) . '.' . $ekstensiFile;
 $targetFilePath = 'image/' . $namaFile;
 
-if (move_uploaded_file($file_tmp, $targetFilePath)) {
-    // Menyimpan data ke database
-    $query = "INSERT INTO buku (kode, isbn, tahun, judul, nama, penerbit, kategori, bahasa, sinopsis, cover) 
-              VALUES ('$kode', '$isbn', '$tahun', '$judul', '$nama', '$penerbit', '$kategori', '$bahasa', '$sinopsis', '$namaFile')";
-    
-    if (mysqli_query($koneksi, $query)) {
-        $_SESSION['msg']['success'] = "Data buku baru berhasil diinput.";
-    } else {
-        $_SESSION['msg']['error'] = "Gagal menyimpan data buku: " . mysqli_error($koneksi);
-    }
+if (!move_uploaded_file($file_tmp, $targetFilePath)) {
+    $_SESSION['msg']['error'] = "Gagal mengupload cover baru.";
+    header('location: ../../index.php?page=b_input');
+    exit();
+}
+
+// Menyimpan data ke database
+$query = "INSERT INTO buku (kode, isbn, tahun, judul, nama, penerbit, kategori, bahasa, sinopsis, cover) 
+          VALUES ('$kode', '$isbn', '$tahun', '$judul', '$nama', '$penerbit', '$kategori', '$bahasa', '$sinopsis', '$namaFile')";
+
+if (mysqli_query($koneksi, $query)) {
+    $_SESSION['msg']['success'] = "Data buku baru berhasil diinput.";
 } else {
-    $_SESSION['msg']['error'] = "Gagal memindahkan file cover.";
+    $_SESSION['msg']['error'] = "Gagal menyimpan data buku: " . mysqli_error($koneksi);
 }
 
 header('location: ../../index.php?page=b_input');
