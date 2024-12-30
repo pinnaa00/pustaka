@@ -1,7 +1,8 @@
 <?php
 session_start();
+
 if (!isset($_POST['btn-submit'])) {
-    header('location: ../../index.php');
+    header('location: ./../index.php?page=a_data');
     exit();
 }
 
@@ -13,68 +14,74 @@ $email = $_POST['email'];
 $alamat = $_POST['alamat'];
 $foto = $_FILES['foto'];
 
+// Validasi input kosong
+if ($nik == '') $_SESSION['msg']['nik'] = "Kolom NIK Tidak Boleh Kosong!";
+if ($nama == '') $_SESSION['msg']['nama'] = "Kolom Nama Tidak Boleh Kosong!";
+if ($nohp == '') $_SESSION['msg']['nohp'] = "Kolom Nomor HP Tidak Boleh Kosong!";
+if ($email == '') $_SESSION['msg']['email'] = "Kolom Email Tidak Boleh Kosong!";
+if ($alamat == '') $_SESSION['msg']['alamat'] = "Kolom Alamat Tidak Boleh Kosong!";
 
-// Validasi jika kosong
-if ($nik == '') {
-    $_SESSION['msg']['nik'] = "Kolom Tidak Boleh Kosong!";
-}
-if ($nama == '') {
-    $_SESSION['msg']['nama'] = "Kolom Tidak Boleh Kosong!";
-}
-if ($nohp == '') {
-    $_SESSION['msg']['nohp'] = "Kolom Tidak Boleh Kosong!";
-}
-if ($email == '') {
-    $_SESSION['msg']['email'] = "Kolom Tidak Boleh Kosong!";
-}
-if ($alamat == '') {
-    $_SESSION['msg']['alamat'] = "Kolom Tidak Boleh Kosong!";
-}
-
-// Validasi jika foto kosong
-if ($foto['error'] == UPLOAD_ERR_NO_FILE) {
-    $_SESSION['msg']['foto'] = "Kolom Foto Tidak Boleh Kosong!";
-}
-
-// Jika ada error, kembali ke halaman sebelumnya
+// Jika ada error, redirect ke halaman update
 if (!empty($_SESSION['msg'])) {
     header('location: ../../index.php?page=p_aupdate&nik=' . $nik);
     exit();
 }
 
+// Menghubungkan ke database
 include('../../components/koneksi.php');
 
-// Validasi jika data sudah ada
-$query = "SELECT * FROM anggota WHERE nama='$nama' AND nohp='$nohp' AND email='$email' AND alamat='$alamat' AND nik != '$nik'";
-$q = mysqli_query($koneksi, $query);
-if (mysqli_num_rows($q) != 0) {
-    $_SESSION['msg']['error'] = "Data anggota dengan nama, nohp, email, atau alamat yang sama sudah ada";
-    header('location: ../../index.php?page=p_aupdate&nik=' . $nik);
+// Validasi data duplikat berdasarkan Email
+$query = "SELECT * FROM anggota WHERE email='$email' AND nik != '$nik'";  // duplikat berdasasrkan email dan nik
+$result = mysqli_query($koneksi, $query);
+if (mysqli_num_rows($result) > 0) {
+    $_SESSION['msg']['error'] = "Data anggota dengan Email yang sama sudah ada.";
+    header('location: ../../index.php?page=a_input_update&nik=' . $nik);
     exit();
 }
 
-//  jika pakai foto yang baru
-$namaFile = $foto['name']; // Nama file foto yang diupload
-$targetFilePath = 'image/' . $namaFile;
+// Ambil data anggota lama untuk perbandingan
+$query = "SELECT * FROM anggota WHERE nik='$nik'";
+$result = mysqli_query($koneksi, $query);
+$row = mysqli_fetch_assoc($result);
 
-// Jika foto baru
-if ($foto['error'] == UPLOAD_ERR_OK) {
-    move_uploaded_file($foto['tmp_name'], $targetFilePath);
-} else {
-    // Jika tidak ada foto baru, PAKE foto lama
-    $query = "SELECT foto FROM anggota WHERE nik='$nik'";
-    $result = mysqli_query($koneksi, $query);
-    if ($row = mysqli_fetch_assoc($result)) {
-        $namaFile = $row['foto']; // Ambil foto lama jika tidak ada foto baru
+// Proses foto baru jika ada
+$namaFileBaru = $row['foto']; // Menggunakan foto lama sebagai default
+
+if ($foto['error'] !== UPLOAD_ERR_NO_FILE) {
+    $ekstensiValid = ['jpg', 'jpeg', 'png'];
+    $ekstensiFile = strtolower(pathinfo($foto['name'], PATHINFO_EXTENSION));
+
+    if (in_array($ekstensiFile, $ekstensiValid)) {
+        // Hapus foto lama jika ada
+        $folder = 'image/';
+        $oldFilePath = $folder . $row['foto'];
+        if ($row['foto'] && file_exists($oldFilePath)) {
+            unlink($oldFilePath);
+        }
+
+        // Generate nama file unik untuk foto baru
+        $namaFileBaru = md5(time() . $foto['name']) . '.' . $ekstensiFile;
+        $targetFilePath = $folder . $namaFileBaru;
+
+        if (!move_uploaded_file($foto['tmp_name'], $targetFilePath)) {
+            $_SESSION['msg']['error'] = "Gagal mengupload foto baru.";
+            header('location: ../../index.php?page=p_aupdate&nik=' . $nik);
+            exit();
+        }
+    } else {
+        $_SESSION['msg']['error'] = "Format foto tidak valid. Hanya JPG, JPEG, dan PNG yang diperbolehkan.";
+        header('location: ../../index.php?page=p_aupdate&nik=' . $nik);
+        exit();
     }
 }
 
 // Update data anggota
-$query = "UPDATE anggota SET nama='$nama', nohp='$nohp', email='$email', alamat='$alamat', foto='$namaFile' WHERE nik='$nik'";
+$query = "UPDATE anggota SET nama='$nama', nohp='$nohp', email='$email', alamat='$alamat', foto='$namaFileBaru' WHERE nik='$nik'";
+
 if (mysqli_query($koneksi, $query)) {
-    $_SESSION['msg']['success'] = "Data anggota berhasil diupdate.";
+    $_SESSION['msg']['success'] = "Data anggota berhasil diperbarui.";
 } else {
-    $_SESSION['msg']['error'] = "Gagal mengupdate data anggota.";
+    $_SESSION['msg']['error'] = "Gagal memperbarui data anggota: " . mysqli_error($koneksi);
 }
 
 header('location: ../../index.php?page=a_data');

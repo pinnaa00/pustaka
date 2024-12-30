@@ -100,7 +100,6 @@
     echo (
         $_REQUEST['page'] == 'tr_pinjam' || 
         $_REQUEST['page'] == 'tr_kembali' || 
-        $_REQUEST['page'] == 'tr_kembalidata' || 
         $_REQUEST['page'] == 'tr_pinjamdata'
     ) ? 'in' : null; 
 ?>" id="transaksiMenu">
@@ -118,11 +117,6 @@
                         <a href="?page=tr_pinjamdata"
                             class="<?php echo ($_REQUEST['page'] == 'tr_pinjamdata') ? 'active' : null; ?>">Data
                             Peminjaman Buku</a>
-                    </li>
-                    <li>
-                        <a href="?page=tr_kembalidata"
-                            class="<?php echo ($_REQUEST['page'] == 'tr_kembalidata') ? 'active' : null; ?>">Data
-                            Pengembalian Buku</a>
                     </li>
                 </ul>
             </li>

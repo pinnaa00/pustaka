@@ -51,7 +51,7 @@ $data = mysqli_fetch_array($q);
                                     <div class="col-lg-12 text-end">
                                         <button type="submit" class="btn btn-primary me-2" name="btn-submit">Simpan
                                             Perubahan</button>
-                                        <!-- <button type="reset" class="btn btn-secondary">Reset</button> -->
+                                        <button type="reset" class="btn btn-secondary">Reset</button>
                                     </div>
                             </form>
                         </div>

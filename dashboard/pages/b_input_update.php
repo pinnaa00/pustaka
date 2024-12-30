@@ -112,7 +112,7 @@ $data = mysqli_fetch_array($q);
                                 </div>
                                 <div class="form-group">
                                     <label>Cover</label>
-                                    <img src="pages/p_buku/image<?= $data['cover'] ?>" alt="cover"
+                                    <img src="pages/p_buku/image/<?= $data['cover'] ?>" alt="cover"
                                         style="width: 100px; height: auto;">
                                     <input value="<?= $data['cover']?>" name="cover" type="file" class="form-control">
                                 </div>
@@ -135,3 +135,4 @@ $data = mysqli_fetch_array($q);
         </div>
     </div>
 </div>
+<?php unset($_SESSION['msg']);?>

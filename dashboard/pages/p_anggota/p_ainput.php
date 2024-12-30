@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 if(!isset($_POST['btn-submit'])){
     header('location: ../../index.php');
     exit();
@@ -12,8 +14,6 @@ $email = $_POST['email'];
 $alamat = $_POST['alamat'];
 $foto = $_FILES['foto'];
 $file_tmp = $_FILES['foto']['tmp_name'];
-
-session_start();
 
 // Validasi jika kosong
 if($nik == '') $_SESSION['msg']['nik'] = "Kolom Tidak Boleh Kosong!";
@@ -32,17 +32,32 @@ if (!empty($_SESSION['msg'])) {
 // Menghubungkan ke database
 include('../../components/koneksi.php');
 
-// Memindahkan file foto
-$namaFile = $foto['name']; // Menggunakan nama file asli
-$targetFilePath = 'image/' . $namaFile;
-move_uploaded_file($file_tmp, $targetFilePath);
-
 // Validasi duplikasi data
-
 $query = "SELECT * FROM anggota WHERE nik='$nik' OR email='$email'";
 $q = mysqli_query($koneksi, $query);
 if (mysqli_num_rows($q) > 0) {
     $_SESSION['msg']['error'] = "Data dengan NIK atau Email ini sudah ada.";
+    header('location: ../../index.php?page=a_input');
+    exit();
+}
+
+// Validasi dan proses file foto
+$ekstensiValid = ['jpg', 'jpeg', 'png'];
+$ekstensiFile = strtolower(pathinfo($foto['name'], PATHINFO_EXTENSION));
+
+if (!in_array($ekstensiFile, $ekstensiValid)) {
+    $_SESSION['msg']['error'] = "Format file foto tidak valid. Hanya JPG, JPEG, dan PNG yang diperbolehkan.";
+    header('location: ../../index.php?page=a_input');
+    exit();
+}
+
+// Generate nama file unik untuk foto baru
+$namaFile = md5(time() . $foto['name']) . '.' . $ekstensiFile;
+$targetFilePath = 'image/' . $namaFile;
+
+// Memindahkan file foto setelah validasi ekstensi
+if (!move_uploaded_file($file_tmp, $targetFilePath)) {
+    $_SESSION['msg']['error'] = "Gagal mengupload foto baru.";
     header('location: ../../index.php?page=a_input');
     exit();
 }

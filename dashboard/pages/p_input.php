@@ -50,7 +50,7 @@
                                         ?>
                                 </div>
                                 <div class="row mt-4">
-                                    <div class="col-lg-12 text-center">
+                                    <div class="col-lg-12 text-end">
                                         <button type="submit" class="btn btn-primary me-2"
                                             name="btn-submit">Submit</button>
                                         <button type="reset" class="btn btn-secondary">Reset</button>
