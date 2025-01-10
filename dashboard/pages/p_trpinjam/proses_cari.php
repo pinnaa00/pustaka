@@ -11,13 +11,12 @@ function showName(str) { // UUNTUK CARI NAMA
                 document.getElementById('nama').value = this.responseText;
             }
         }
-        xmlhttp.open("GET", "pages/p_trpinjam/cari_nik.php?q=" + str, true);
+        xmlhttp.open("GET", "pages/p_trpinjam/cari.php?q=" + str, true);
         xmlhttp.send();
     }
 }
 
-function showBook(str,
-    bookNumber) { // UNTUK CARI BUKU 
+function showBook(str, bookNumber) { // UNTUK CARI BUKU 
     let titleField = 'judulBuku' + bookNumber; // ID of the title field
     if (str.length == 0) {
         document.getElementById(titleField).value = "";
@@ -29,7 +28,7 @@ function showBook(str,
                 document.getElementById(titleField).value = this.responseText;
             }
         }
-        xmlhttp.open("GET", "pages/p_trpinjam/cari_nik.php?b=" + str, true);
+        xmlhttp.open("GET", "pages/p_trpinjam/cari.php?b=" + str, true);
         xmlhttp.send();
     }
 }

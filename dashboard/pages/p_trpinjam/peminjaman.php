@@ -2,113 +2,109 @@
 session_start();
 include('../../components/koneksi.php');
 
-// Redirect jika tombol reset ditekan
-if (isset($_POST['btn-reset'])) {
-    header('location: ../../?page=transaksi/tr_pinjam');
-    exit();
-}
-
-// Redirect jika form tidak di-submit
+    // Redirect jika form di-submit
 if (!isset($_POST['submit'])) {
-    header('location: ../../index.php?page=dashboard');
+    header('location: ../../index.php');
     exit();
 }
 
 // Ambil data dari form
 $nik = $_POST['nik'];
+$nama = $_POST['nama'];
 $tgl_pinjam = $_POST['tgl_pinjam'];
-$buku = array_filter([
-    $_POST['buku1'] ?? '',
-    $_POST['buku2'] ?? '',
-    $_POST['buku3'] ?? '',
-    $_POST['buku4'] ?? '',
-    $_POST['buku5'] ?? '',
-]);
 
-/// show data
-$_SESSION['value']['nik'] = $nik;
-$_SESSION['value']['tgl_pinjam'] = $tgl_pinjam;
-$_SESSION['value']['nama'] = $_POST['nama'];
-$_SESSION['value']['judul1'] = $_POST['judul1'];
-$_SESSION['value']['judul2'] = $_POST['judul2'];
-$_SESSION['value']['judul3'] = $_POST['judul3'];
-$_SESSION['value']['judul4'] = $_POST['judul4'];
-$_SESSION['value']['judul5'] = $_POST['judul5'];
-
-foreach ($buku as $key => $judul) {
-    $_SESSION['value']['judul' . ($key + 1)] = $judul;
+// ambil data buku
+$daftarBuku = [];
+for ($i = 1; $i <= 5; $i++) {
+    $kodeBuku = $_POST["buku$i"] ?? '';
+    $judulBuku = $_POST["judul$i"] ?? '';
+    if (!empty($kodeBuku)) {
+        $daftarBuku[] = ['kode' => $kodeBuku, 'judul' => $judulBuku];
+    }
 }
+
+// Simpan ke sesi untuk redisplay
+$_SESSION['value'] = [
+    'nik' => $nik,
+    'tgl_pinjam' => $tgl_pinjam,
+    'nama' => $nama,
+];
+
+foreach ($daftarBuku as $key => $buku) {
+    $_SESSION['value']["buku" . ($key + 1)] = $buku['kode'];
+    $_SESSION['value']["judul" . ($key + 1)] = $buku['judul'];
+}
+
 
 // Validasi anggota
 
-$sql_anggota ="SELECT * FROM anggota WHERE nik = '$nik'";
-$query_anggota = mysqli_query($koneksi, $sql_anggota);
-$q_anggota = mysqli_fetch_array($query_anggota);
-
-if ($nik == '') {
-    $_SESSION['msg']['nik'] = 'NIK wajib diisi!';
-}
-if ($tgl_pinjam == '') {
-    $_SESSION['msg']['tgl_pinjam'] = 'Isi tanggal pinjam';
+if (empty($nik)) {
+    $_SESSION['msg']['nik'] = "Tidak ada NIK yang dicari!";
+// } else if (strlen($nik) < 16 || mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM anggota WHERE nik='$nik'")) == 0) {
+//     $_SESSION['msg']['nik'] = "";
+} else if (!isset($_REQUEST['id']) && mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM transaksi WHERE nik='$nik' AND tgl_kembali IS NULL")) != 0) {
+    $_SESSION['msg']['general'] = "Anggota belum mengembalikan buku";
 }
 
-if (isset($_SESSION['msg']['nik']) || isset($_SESSION['msg']['tgl_pinjam'])) {
-    header('location:  ../../?page=tr_pinjam');
+if (empty($tgl_pinjam)) {
+    $_SESSION['msg']['tgl_pinjam'] = "Isi tanggal peminjaman!";
+}
+
+if (empty($daftarBuku)) {
+    $_SESSION['msg']['buku'] = "Pilih buku yang ingin dipinjam!";
+} else {
+    $codes = []; // Array untuk menyimpan kode buku yang diinput
+    foreach ($daftarBuku as $buku) {
+        // Validasi apakah buku dengan kode yang sama sudah ada di input
+        if (in_array($buku['kode'], $codes)) {
+            $_SESSION['msg']['buku'] = "Tidak bisa meminjam buku dengan kode yang sama!";
+            break;
+        }
+        $codes[] = $buku['kode']; // Tambahkan kode ke array jika belum ada
+
+        // Validasi apakah buku ada di database
+        $sql = "SELECT * FROM buku WHERE kode='{$buku['kode']}'";
+        $query = mysqli_query($koneksi, $sql);
+        if (mysqli_num_rows($query) == 0) {
+            $_SESSION['msg']['buku'] = "Buku dengan kode '{$buku['kode']}' tidak ditemukan!";
+            break;
+        }
+    }
+}
+
+if (!empty($_SESSION['msg'])) {
+    header('location: ../../?page=tr_pinjam');
     exit();
 }
 
-// Validasi buku
 
-$sql_buku ="SELECT * FROM buku WHERE kode = '$kode'";
-$query_buku = mysqli_query($koneksi, $sql_buku);
-$q_buku = mysqli_fetch_array($query_buku);
-
-if (empty($buku)) {
-    $_SESSION['msg']['judul buku'] = "Pilih buku yang ingin dipinjam!";
-}
-
-if (isset($_SESSION['msg'])) {
-    header('location:  ../../?page=tr_pinjam');
-    exit();
-}
-
-
-// Mulai transaksi database
+/// Mulai transaksi
 mysqli_autocommit($koneksi, false);
-
-
 try {
-    // Insert ke tabel transaksi
-    $queryTransaksi = "INSERT INTO transaksi (id, nik, tgl_pinjam, tgl_kembali) VALUES (NULL, '$nik', '$tgl_pinjam', NULL)";
-    $resultTransaksi = mysqli_query($koneksi, $queryTransaksi);
-    if (!$resultTransaksi) {
-        throw new Exception('Gagal menambahkan transaksi: ' . mysqli_error($koneksi));
+    $queryTransaksi = "INSERT INTO transaksi (id, nik, tgl_pinjam, tgl_kembali) 
+                        VALUES (NULL, '$nik', '$tgl_pinjam', NULL)";
+    if (!mysqli_query($koneksi, $queryTransaksi)) {
+        throw new Exception(mysqli_error($koneksi));
     }
 
-    // Ambil ID transaksi terakhir
-    $id_transaksi = mysqli_insert_id($koneksi);
-
-    // Insert ke tabel detail_transaksi
-    foreach ($buku as $judul) {
-        $queryDetail = "INSERT INTO detail_transaksi (id, id_transaksi, nik, kode_buku) VALUES (NULL, '$id_transaksi', '$nik', '$buku')";
-        $resultDetail = mysqli_query($koneksi, $queryDetail);
-        if (!$resultDetail) {
-            throw new Exception('Gagal menambahkan detail transaksi: ' . mysqli_error($koneksi));
+    $idTransaksi = mysqli_insert_id($koneksi);
+    foreach ($daftarBuku as $buku) {
+        $buku = $buku['kode'];
+        $queryDetail = "INSERT INTO detail_transaksi (id, id_transaksi, nik, kode_buku) 
+                        VALUES (NULL, '$idTransaksi', '$nik', '$buku')";
+        if (!mysqli_query($koneksi, $queryDetail)) {
+            throw new Exception(mysqli_error($koneksi));
         }
     }
 
-    // Commit transaksi
     mysqli_commit($koneksi);
-
-    // Sukses
-    $_SESSION['msg']['sukses'] = 'Transaksi peminjaman berhasil ditambahkan!';
+    $_SESSION['msg']['sukses'] = "TRANSAKSI PEMINJAMAN BUKU BERHASIL!";
     unset($_SESSION['value']);
     header('location: ../../?page=tr_pinjam');
     exit();
 } catch (Exception $e) {
-    // Rollback jika error
     mysqli_rollback($koneksi);
-    $_SESSION['msg']['general'] = 'Terjadi kesalahan: ' . $e->getMessage();
+    $_SESSION['msg']['general'] = "Terjadi kesalahan: " . $e->getMessage();
     header('location: ../../?page=tr_pinjam');
     exit();
 }

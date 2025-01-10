@@ -1,3 +1,7 @@
+<?php
+include('p_trpinjam/tampil_data.php');
+$no = $offset + 1;
+?>
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
@@ -14,7 +18,7 @@
             <?php echo $_SESSION['msg']['delete']; ?>
         </div>
         <?php } ?>
-        <!-- /.col-lg-12 -->
+        <!-- PAGINATION -->
     </div>
     <!-- /.row -->
     <div class="row">
@@ -40,32 +44,23 @@
                                 </tr>
                             </thead>
                             <tbody class="table-border-bottom-0">
-                                <?php
-                                 include('components/koneksi.php');
-                                 $query = "SELECT * FROM transaksi";
-                                 $q = mysqli_query($koneksi, $query);
-                                 $no = 1;
-                                 while ($data = mysqli_fetch_array($q)) { ?>
+                                <?php while ($data = mysqli_fetch_array($query)) { ?>
                                 <tr>
                                     <td><?php echo $no++; ?></td>
                                     <td><?php echo $data['nik']; ?></td>
                                     <td><?php echo $data['nama'] ?></td>
-                                    <td><?php echo ($data['tgl_kembali'] != null) ? '0' : $data['tgl_kembali'] ?>/5
+                                    <td><?php echo ($data['tgl_kembali'] != null) ? '0' : $data['buku_dipinjam'] ?>/5
                                     </td>
                                     <td><?php echo $data['tgl_pinjam'] ?></td>
                                     <td><?php echo ($data['tgl_kembali'] != null) ? $data['tgl_kembali'] : '<b>Not return yet</b>' ?>
                                     </td>
                                     <td>
-                                        <a href="" class="btn btn-sm btn-info">
-                                            Edit
-                                            <i class="ri-pencil-line"></i>
-                                        </a> |
-                                        <a href="?page=transaction/detail-borrower&id=<?php echo $data['id_transaksi']; ?>"
+                                        <a href="?page=detail_tr&id=<?php echo $data['id_transaksi']; ?>"
                                             class="btn btn-sm btn-warning">
                                             Detail
                                             <i class="ri-book-open-line"></i>
                                         </a> |
-                                        <a href="pages/transaksi/proses/delete.php?nik=<?php echo $data['nik']; ?>"
+                                        <a href="pages/p_trpinjam/delete.php?nik=<?php echo $data['nik']; ?>"
                                             onclick="return confirm('Anda yakin ingin menghapus data ini?')"
                                             class="btn btn-sm btn-danger">
                                             <i class="ri-delete-bin-line"></i>
@@ -78,7 +73,9 @@
                             </tbody>
                         </table>
                     </div>
-                    <!-- /.table-responsive -->
                 </div>
-                <!-- /.panel-body -->
-                <?php unset($_SESSION['msg']); ?>
+            </div>
+        </div>
+    </div>
+</div>
+<?php unset($_SESSION['msg']); ?>

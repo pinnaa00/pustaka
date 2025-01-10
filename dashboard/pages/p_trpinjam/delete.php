@@ -4,8 +4,8 @@ $nik = $_REQUEST['nik'];
 
 include('../../components/koneksi.php');
 $query = "DELETE FROM transaksi WHERE nik='$nik'";
-$q= mysqli_query($koneksi, $q);
+$q= mysqli_query($koneksi, $query);
 
 session_start();
 $_SESSION['msg']['delete'] = "Data peminjam <b>'". $nik ."</b>' berhasil di hapus!";
-header('location: ../../../?page=tr_pinjamdata');
+header('location: ../../?page=tr_pinjamdata');

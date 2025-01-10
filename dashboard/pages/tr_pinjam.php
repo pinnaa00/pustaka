@@ -62,138 +62,47 @@
             </div>
 
             <!-- Kolom Buku -->
-            <div class="row">
-                <!-- Form Peminjaman -->
+            <div class="col-lg-6">
                 <div class="form-group">
                     <div class="card-body">
-                        <?php if (isset($_SESSION['msg']['buku'])) {
-                     echo '<div class="alert alert-danger float-end w-50" role="alert">' . $_SESSION['msg']['buku'] . '</div>';
-                  } ?>
-                        <div class="col-lg-6">
+                        <?php if (isset($_SESSION['msg']['buku'])) { ?>
+                        <div class="alert alert-danger float-end w-50" role="alert">
+                            <?php echo $_SESSION['msg']['buku']; ?>
+                        </div>
+                        <?php } ?>
+
+                        <?php
+                            $maxBuku = 5; // Jumlah maksimum buku yang dapat dipinjam
+                            for ($i = 1; $i <= $maxBuku; $i++) { 
+                        ?>
+                        <div class="col-lg-6 mb-4">
                             <div class="panel panel-default">
-                                <div class="panel-heading">Buku 1</div>
-                                <!-- Pencarian Buku 1 -->
-                                <!-- Label dan Input Pencarian Buku -->
-                                <label for="searchBook1">Cari Buku 1</label>
-                                <div class="input-group input-group-merge">
-                                    <span
-                                        class="input-group-text <?php echo isset($_SESSION['msg']['!buku1']) ? 'border-danger' : ''; ?>">
-                                        <i class="ri-search-line ri-20px"></i>
-                                    </span>
-                                    <input type="text" name="buku1" id="searchBook1"
-                                        class="form-control <?php echo isset($_SESSION['msg']['!buku1']) ? 'border-danger' : ''; ?>"
-                                        placeholder="Cari Buku 1"
-                                        value="<?php echo $data['buku1'] ?? $_SESSION['value']['buku1'] ?? ''; ?>"
-                                        onkeyup="showBook(this.value, 1)" />
-                                </div>
-
-                                <!-- Judul Buku -->
-                                <label for="judulBuku1">Judul Buku</label>
-                                <div class="form-floating form-floating-outline mb-6">
-                                    <input readonly type="text" name="judul1" id="judulBuku1" class="form-control"
-                                        value="<?php echo $data['judul1'] ?? $_SESSION['value']['judul1'] ?? ''; ?>" />
-                                </div>
-
-
-                                <!-- Buku 2 -->
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">Buku 2</div>
-                                    <div class="form-group">
-                                        <!-- Pencarian Buku 2 -->
-                                        <label for="searchBook2">Cari Buku 2</label>
-                                        <div class="input-group input-group-merge">
-                                            <span class="input-group-text"><i class="ri-search-line ri-20px"></i></span>
-                                            <input type="text" name="buku2" class="form-control"
-                                                placeholder="Cari Buku 2"
-                                                value="<?php echo $_SESSION['value']['buku2'] ?? ''; ?>"
-                                                onkeyup="showBook(this.value, 2)" />
-                                        </div>
-                                    </div>
-                                    <!-- Judul Buku 2 -->
-                                    <div class="form-group">
-                                        <label for="judulBuku2">Judul Buku</label>
-                                        <input readonly type="text" name="judul2" id="judulBuku2" class="form-control"
-                                            value="<?php echo $_SESSION['value']['judul2'] ?? ''; ?>" />
+                                <div class="panel-heading">Book <?php echo $i; ?></div>
+                                <div class="panel-body">
+                                    <!-- Input kode buku -->
+                                    <div class="input-group mb-2">
+                                        <span class="input-group-text"><i class="ri-search-line ri-20px"></i></span>
+                                        <input type="text" class="form-control" name="buku<?php echo $i; ?>"
+                                            placeholder="Kode buku"
+                                            value="<?php echo $_SESSION['value']["buku$i"] ?? ($buku[$i - 1]['kode'] ?? ''); ?>"
+                                            onkeyup="showBook(this.value, <?php echo $i; ?>)" />
                                     </div>
 
-                                    <!-- Buku 3 -->
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">Buku 3</div>
-                                        <br>
-                                        <div class="form-group">
-                                            <!-- Pencarian Buku 3 -->
-                                            <label for="searchBook3">Cari Buku 3</label>
-                                            <div class="input-group input-group-merge">
-                                                <span class="input-group-text"><i
-                                                        class="ri-search-line ri-20px"></i></span>
-                                                <input type="text" name="buku3" class="form-control"
-                                                    placeholder="Cari Buku 3"
-                                                    value="<?php echo $_SESSION['value']['buku3'] ?? ''; ?>"
-                                                    onkeyup="showBook(this.value, 3)" />
-                                            </div>
-                                        </div>
-                                        <!-- Judul Buku 3 -->
-                                        <div class="form-group">
-                                            <label for="judulBuku3">Judul Buku</label>
-                                            <input readonly type="text" name="judul3" id="judulBuku3"
-                                                class="form-control"
-                                                value="<?php echo $_SESSION['value']['judul3'] ?? ''; ?>" />
-                                        </div>
-
-                                        <!-- Buku 4 -->
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">Buku 4</div>
-                                            <div class="form-group">
-                                                <!-- Pencarian Buku 4 -->
-                                                <label for="searchBook4">Cari Buku 4</label>
-                                                <div class="input-group input-group-merge">
-                                                    <span class="input-group-text"><i
-                                                            class="ri-search-line ri-20px"></i></span>
-                                                    <input type="text" name="buku4" class="form-control"
-                                                        placeholder="Cari Buku 4"
-                                                        value="<?php echo $_SESSION['value']['buku4'] ?? ''; ?>"
-                                                        onkeyup="showBook(this.value, 4)" />
-                                                </div>
-                                            </div>
-                                            <!-- Judul Buku 4 -->
-                                            <div class="form-group">
-                                                <label for="judulBuku4">Judul Buku</label>
-                                                <input readonly type="text" name="judul4" id="judulBuku4"
-                                                    class="form-control"
-                                                    value="<?php echo $_SESSION['value']['judul4'] ?? ''; ?>" />
-                                            </div>
-
-                                            <!-- Buku 5 -->
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading">Buku 5</div>
-                                                <div class="form-group">
-                                                    <!-- Pencarian Buku 5 -->
-                                                    <label for="searchBook5">Cari Buku 5</label>
-                                                    <div class="input-group input-group-merge">
-                                                        <span class="input-group-text"><i
-                                                                class="ri-search-line ri-20px"></i></span>
-                                                        <input type="text" name="buku5" class="form-control"
-                                                            placeholder="Cari Buku 5"
-                                                            value="<?php echo $_SESSION['value']['buku5'] ?? ''; ?>"
-                                                            onkeyup="showBook(this.value, 5)" />
-                                                    </div>
-                                                </div>
-                                                <!-- Judul Buku 5 -->
-                                                <div class="form-group">
-                                                    <label for="judulBuku5">Judul Buku</label>
-                                                    <input readonly type="text" name="judul5" id="judulBuku5"
-                                                        class="form-control"
-                                                        value="<?php echo $_SESSION['value']['judul5'] ?? ''; ?>" />
-                                                </div>
-
-                                            </div>
-                                        </div>
+                                    <!-- Input judul buku (readonly) -->
+                                    <div class="input-group">
+                                        <input readonly type="text" class="form-control"
+                                            placeholder="Judul akan muncul disini" name="title<?php echo $i; ?>"
+                                            id="judulBuku<?php echo $i; ?>"
+                                            value="<?php echo $_SESSION['value']["judul$i"] ?? ($buku[$i - 1]['title'] ?? ''); ?>" />
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <?php } ?>
                     </div>
                 </div>
+            </div>
+        </div>
     </form>
 </div>
 
@@ -204,4 +113,3 @@ include('p_trpinjam/proses_cari.php');
 unset($_SESSION['msg']); 
 unset($_SESSION['value']);
 ?>
-<!-- apa namanya buatlah msg kan?  -->
