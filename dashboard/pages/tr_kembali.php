@@ -18,9 +18,9 @@
                         </div>
                         <?php } ?>
 
-                        <?php if (isset($_SESSION['msg']['general'])) { ?>
+                        <?php if (isset($_SESSION['msg']['failed'])) { ?>
                         <div class="alert alert-danger ms-2 me-2" role="alert">
-                            <?php echo $_SESSION['msg']['general']; ?>
+                            <?php echo $_SESSION['msg']['failed']; ?>
                         </div>
                         <?php } ?>
 

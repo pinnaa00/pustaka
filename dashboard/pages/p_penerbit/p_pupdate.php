@@ -23,12 +23,12 @@ if($alamat == '') {
     $_SESSION['msg']['alamat'] = "Kolom Tidak Boleh Kosong!";
 }
 if(isset($_SESSION['msg']['nama'])){
-    header('location: ../../?page=p_input_update'.$kode);
+    header('location: ../../?page=p_input_update&kode='.$kode);
     exit();
 }
 
 if(isset($_SESSION['msg']['alamat'])){
-    header('location: ../../index.php?page=p_input_update'.$kode);
+    header('location: ../../index.php?page=p_input_update&kode='.$kode);
     exit();
 }
 

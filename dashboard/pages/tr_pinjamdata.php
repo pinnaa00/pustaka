@@ -52,7 +52,7 @@ $no = $offset + 1;
                                     <td><?php echo ($data['tgl_kembali'] != null) ? '0' : $data['buku_dipinjam'] ?>/5
                                     </td>
                                     <td><?php echo $data['tgl_pinjam'] ?></td>
-                                    <td><?php echo ($data['tgl_kembali'] != null) ? $data['tgl_kembali'] : '<b>Not return yet</b>' ?>
+                                    <td><?php echo ($data['tgl_kembali'] != null) ? $data['tgl_kembali'] : '<b>Buku Belum Dikembalikan</b>' ?>
                                     </td>
                                     <td>
                                         <a href="?page=detail_tr&id=<?php echo $data['id_transaksi']; ?>"
@@ -60,11 +60,10 @@ $no = $offset + 1;
                                             Detail
                                             <i class="ri-book-open-line"></i>
                                         </a> |
-                                        <a href="pages/p_trpinjam/delete.php?nik=<?php echo $data['nik']; ?>"
-                                            onclick="return confirm('Anda yakin ingin menghapus data ini?')"
-                                            class="btn btn-sm btn-danger">
-                                            <i class="ri-delete-bin-line"></i>
-                                            Delete
+                                        <a href="?page=tr_pinjamupdate&id=<?php echo $data['id_transaksi']; ?>"
+                                            class="btn btn-sm btn-primary <?php echo ($data['tgl_kembali'] != null || $data['buku_dipinjam'] =='5') ? 'disabled' : '' ?>">
+                                            Tambah Buku
+                                            <!-- disabled berguna untuk jika ada tanggal kembali maka tambah buku tidak bisa diakses  -->
                                         </a>
                                     </td>
                                 </tr>

@@ -40,8 +40,8 @@ $data = mysqli_fetch_array($q);
                                     <input value="<?= $data['nama'] ?>" class="form-control" placeholder="Masukkan Nama"
                                         name="nama">
                                     <?php 
-                                        if(isset($_SESSION['msg']['err_nama'])){
-                                            echo '<span class="text-danger">'.$_SESSION['msg']['err_nama'].'</span>';
+                                        if(isset($_SESSION['msg']['nama'])){
+                                            echo '<span class="text-danger">'.$_SESSION['msg']['nama'].'</span>';
                                         }
                                     ?>
                                 </div>
@@ -49,6 +49,11 @@ $data = mysqli_fetch_array($q);
                                     <label>ALAMAT</label>
                                     <input value="<?= $data['alamat'] ?>" class="form-control" type="text"
                                         placeholder="Masukkan Alamat" name="alamat">
+                                    <?php 
+                                        if(isset($_SESSION['msg']['alamat'])){
+                                            echo '<span class="text-danger">'.$_SESSION['msg']['alamat'].'</span>';
+                                        }
+                                    ?>
                                 </div>
                                 <div class="row mt-4">
                                     <div class="col-lg-12 text-end">

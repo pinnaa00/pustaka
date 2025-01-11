@@ -34,10 +34,10 @@
                                 </thead>
                                 <tbody class="table-border-bottom-0">
                                     <?php 
-                            if (isset($_REQUEST['detail_transaksi'])) {
-                                $id = $_REQUEST['detail_transaksi'];
+                            if (isset($_REQUEST['id'])) {
+                                $id = $_REQUEST['id'];
 
-                                include('../components/koneksi.php');
+                                include('components/koneksi.php');
                                 $query = "SELECT * FROM detail_transaksi
                                         LEFT JOIN anggota ON detail_transaksi.nik = anggota.nik 
                                         WHERE detail_transaksi.id_transaksi = '$id' ";
@@ -52,7 +52,7 @@
                                         <td><?= $data['email'] ?></td>
                                         <td><?= $data['alamat'] ?></td>
                                         <td>
-                                            <img src="pages/p_anggota/image/<?= $data['foto'] ?>" alt="">
+                                            <img src="pages/p_anggota/image/<?= $data['foto'] ?>" alt="" width="100">
                                         </td>
                                     </tr>
                                 </tbody>
@@ -86,26 +86,22 @@
                     <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                         <thead>
                             <tr>
-                                <th>NIK</th>
-                                <th>NAMA</th>
-                                <th>NO HP</th>
-                                <th>EMAIL</th>
-                                <th>ALAMAT</th>
-                                <th>FOTO</th>
+                                <th>NO</th>
+                                <th>KODE BUKU</th>
+                                <th>JUDUL BUKU</th>
+                                <th>COVER</th>
                             </tr>
                         </thead>
                         <tbody class="table-border-bottom-0">
                             <?php 
-                            if (isset($_REQUEST['detail_transaksi'])) {
-                                $id = $_REQUEST['detail_transaksi'];
-
-                                include('../components/koneksi.php');
+                            if (isset($_REQUEST['id'])) {
+                                $id = $_REQUEST['id'];
                                 $query = "SELECT * FROM detail_transaksi
-                                        LEFT JOIN buku ON detail_transaksi.kode = buku.kode
+                                        LEFT JOIN buku ON detail_transaksi.kode_buku = buku.kode
                                         WHERE detail_transaksi.id_transaksi = '$id'";
                                 $q = mysqli_query($koneksi, $query);
-                                $no = 1;
                             }
+                            $no = 1;
                             while ($dataBuku = mysqli_fetch_array($q)) {
                         ?>
                             <tr>
@@ -113,7 +109,7 @@
                                 <td><?= $dataBuku['kode'] ?></td>
                                 <td><?= $dataBuku['judul'] ?></td>
                                 <td>
-                                    <img src="pages/p_buku/image/<?= $dataBuku['cover'] ?>" alt="">
+                                    <img src="pages/p_buku/image/<?= $dataBuku['cover'] ?>" alt="" width="100">
                                 </td>
                             </tr>
                             <?php } ?>

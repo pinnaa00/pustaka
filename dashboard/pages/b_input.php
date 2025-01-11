@@ -116,6 +116,7 @@ $selectKategori = mysqli_query($koneksi, $kategori);
                                 <div class="form-group">
                                     <label>BAHASA</label>
                                     <select class="form-control" name="bahasa">
+                                        <option value="">--- Pilih Bahasa --- </option>
                                         <option value="Bahasa Indonesia">Bahasa Indonesia</option>
                                         <option value="Bahasa Inggris">Bahasa Inggris</option>
                                     </select>
