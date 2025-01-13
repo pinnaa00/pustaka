@@ -36,8 +36,8 @@ $data = mysqli_fetch_array($q);
                                     <input readonly value="<?= $data['nik']?>" name="nik" type="text"
                                         class="form-control" placeholder="Masukkan NIK">
                                     <?php 
-                                        if(isset($_SESSION['msg']['err_nama'])){
-                                            echo '<span class="text-danger">'.$_SESSION['msg']['err_nama'].'</span>';
+                                        if(isset($_SESSION['msg']['nik'])){
+                                            echo '<span class="text-danger">'.$_SESSION['msg']['nama'].'</span>';
                                         }
                                     ?>
                                 </div>
@@ -45,11 +45,14 @@ $data = mysqli_fetch_array($q);
                                     <label>NAMA</label>
                                     <input value="<?= $data['nama']?>" name="nama" type="text" class="form-control"
                                         placeholder="Masukkan Name">
+                                    <?php if (isset($_SESSION['msg']['nama'])) echo '<div class="text-danger">' . $_SESSION['msg']['nama'] . '</div>'; ?>
+
                                 </div>
                                 <div class="form-group">
                                     <label>No Hp</label>
                                     <input value="<?= $data['nohp']?>" name="nohp" type="number" class="form-control"
                                         placeholder="Masukkan Number">
+                                    <?php if (isset($_SESSION['msg']['nohp'])) echo '<div class="text-danger">' . $_SESSION['msg']['nohp'] . '</div>'; ?>
                                 </div>
                             </div>
                             <div class="col-lg-4">
@@ -58,8 +61,8 @@ $data = mysqli_fetch_array($q);
                                     <input value="<?= $data['email']?>" name="email" type="email" class="form-control"
                                         placeholder="Masukkan Email">
                                     <?php 
-                                        if(isset($_SESSION['msg']['err_nama'])){
-                                            echo '<span class="text-danger">'.$_SESSION['msg']['err_nama'].'</span>';
+                                        if(isset($_SESSION['msg']['email'])){
+                                            echo '<span class="text-danger">'.$_SESSION['msg']['email'].'</span>';
                                         }
                                     ?>
                                 </div>
@@ -67,12 +70,16 @@ $data = mysqli_fetch_array($q);
                                     <label>ALAMAT</label>
                                     <input value="<?= $data['alamat']?>" name="alamat" type="text" class="form-control"
                                         placeholder="Masukkan Alamat">
+                                    <?php if (isset($_SESSION['msg']['alamat'])) echo '<div class="text-danger">' . $_SESSION['msg']['alamat'] . '</div>'; ?>
+
                                 </div>
                                 <div class="form-group">
                                     <label>FOTO</label>
                                     <img src="pages/p_anggota/image/<?= $data['foto'] ?>" alt="Foto"
                                         style="width: 100px; height: auto;">
-                                    <input value="<?= $data['foto']?>" name="foto" type="file" class="form-control">
+                                    <input value="<?= $data['foto']?>" name="foto" type="file" class="form-control"
+                                        accept=".jpg, .png , .jpeg">
+                                    <?php if (isset($_SESSION['msg']['foto'])) echo '<div class="text-danger">' . $_SESSION['msg']['foto'] . '</div>'; ?>
                                 </div>
                             </div>
                         </div>

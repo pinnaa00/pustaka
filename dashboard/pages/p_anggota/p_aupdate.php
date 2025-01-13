@@ -23,7 +23,7 @@ if ($alamat == '') $_SESSION['msg']['alamat'] = "Kolom Alamat Tidak Boleh Kosong
 
 // Jika ada error, redirect ke halaman update
 if (!empty($_SESSION['msg'])) {
-    header('location: ../../index.php?page=p_aupdate&nik=' . $nik);
+    header('location: ../../index.php?page=a_input_update&nik=' . $nik);
     exit();
 }
 

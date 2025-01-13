@@ -83,10 +83,6 @@ if (isset($_SESSION['login'])) {
                                     <?php } ?>
                                 </div>
 
-                                <div class="form-group">
-                                    <a href="forgot-password.php">Forgot password?</a>
-                                </div>
-
                                 <button class="btn btn-lg btn-success btn-block" type="submit"
                                     name="btn-login">Login</button>
                             </fieldset>

@@ -1,6 +1,6 @@
 <!-- live search using ajax -->
 <script>
-function showName(str) { // UUNTUK CARI NAMA
+function showName(str) {
     if (str.length == 0) {
         document.getElementById('nama').value = "";
         return;
@@ -16,8 +16,8 @@ function showName(str) { // UUNTUK CARI NAMA
     }
 }
 
-function showBook(str, bookNumber) { // UNTUK CARI BUKU 
-    let titleField = 'judulBuku' + bookNumber; // ID of the title field
+function showBook(str, bookNumber) {
+    let titleField = 'judul' + bookNumber; // ID of the title field
     if (str.length == 0) {
         document.getElementById(titleField).value = "";
         return;

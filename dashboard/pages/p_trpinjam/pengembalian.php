@@ -13,7 +13,9 @@ if (!isset($_POST['submit'])) {
 $nik = $_POST['nik'];
 $tgl_kembali = $_POST['tgl_kembali'];
 
-
+$_SESSION['value']['nik'] = $nik;
+$_SESSION['value']['tgl_kembali'] = $tgl_kembali;
+$_SESSION['value']['nama'] = $_POST['nama'];
 // Validasi anggota
 
 $sql ="SELECT * FROM anggota WHERE nik = '$nik'";
@@ -32,62 +34,48 @@ if (isset($_SESSION['msg']['nik']) || isset($_SESSION['msg']['tgl_kembali'])) {
     exit();
 }
 
+// Redirect kembali jika ada error
+if (isset($_SESSION['msg'])) {
+   header('location: ../../index.php?page=tr_kembali');
+   exit();
+}
 
-// Mulai transaksi database
+// Mulai transaksi
 mysqli_autocommit($koneksi, false);
 
-
-try {
     // 1. Cek apakah ada transaksi yang return_date nya NULL untuk satu member
-    $sqlCheckReturn = "SELECT tgl_kembali FROM transaksi WHERE nik='$nik'";
+    $sqlCheckReturn = "SELECT * FROM transaksi WHERE nik='$nik'";
     $queryCheckReturn = mysqli_query($koneksi, $sqlCheckReturn);
-    if (!$queryCheckReturn) {
-       throw new Exception("Gagal mengecek status pengembalian buku: " . mysqli_error($koneksi));
-    }
- 
-    $nullReturnDate = false; // Menandakan apakah masih ada transaksi dengan tgl_kembali NULL
-    $validReturnDate = false; // Menandakan apakah semua transaksi sudah memiliki tgl_kembali yang valid
- 
-    // Periksa seluruh transaksi member
-    while ($dataReturn = mysqli_fetch_array($queryCheckReturn)) {
-       if ($dataReturn['tgl_kembali'] == NULL) {
-          // Jika ada transaksi dengan tgl_kembali NULL, berarti member masih bisa mengembalikan buku
-          $nullReturnDate = true;
-       } else {
-          // Jika ada transaksi dengan tgl_kembali yang sudah terisi (valid), berarti member sudah mengembalikan buku
-          $validReturnDate = true;
-       }
-    }
- 
-    // 2. Jika masih ada transaksi dengan tgl_kembali NULL, maka member bisa mengembalikan buku
-    if ($nullReturnDate) {
-       // Update tgl_kembali pada transaksi yang belum dikembalikan
-       $sqlUpdateTransaksi = "UPDATE transaksi SET tgl_kembali='$tgl_kembali' WHERE nik='$nik' AND tgl_kembali IS NULL";
-       $queryUpdateTransaksi = mysqli_query($koneksi, $sqlUpdateTransaksi);
-       if (!$queryUpdateTransaksi) {
-          throw new Exception("Gagal mengupdate tgl_kembali: " . mysqli_error($koneksi));
-       }
- 
-       // Commit transaksi
-       mysqli_commit($koneksi);
- 
-       // Set pesan sukses
-       $_SESSION['msg']['return'] = "Buku peminjaman <b>" . $nik . "</b> berhasil dikembalikan!";
-       unset($_SESSION['value']);
-       header('location: ../../?page=tr_pinjamdata');
-       exit();
-    } else {
-       // Jika tidak ada transaksi dengan return_date NULL, maka member sudah mengembalikan semua bukunya
-       $_SESSION['msg']['failed'] = "Tidak ada peminjaman buku dari member ini!";
-       header('location: ../../?page=tr_kembali');
-       exit();
-    }
- 
- } catch (Exception $e) {
-    // Rollback jika terjadi error
-    mysqli_rollback($koneksi);
-    $_SESSION['msg']['failed'] = "Terjadi kesalahan saat memproses data: " . $e->getMessage();
-    header('location: ../../?page=tr_kembali');
-    exit();
- }
- 
+    $dataBorrow = mysqli_fetch_assoc($queryCheckReturn);
+   if (!$dataBorrow) {
+      $_SESSION['msg']['failed'] = "Tidak ada peminjaman buku yang belum dikembalikan untuk member ini!";
+      header('location: ../../?page=tr_kembali');
+      exit();
+   }
+
+   // 2. Validasi tanggal pengembalian tidak boleh lebih kecil dari tanggal peminjaman
+   $tgl_pinjam = $dataBorrow['tgl_pinjam']; // Ambil tanggal peminjaman
+   if (strtotime($tgl_kembali) < strtotime($tgl_pinjam)) {
+      $_SESSION['msg']['failed'] = "Tanggal pengembalian tidak boleh lebih kecil dari tanggal peminjaman!";
+      header('location: ../../?page=tr_kembali');
+      exit();
+   }
+
+   // 3. Update return_date untuk transaksi yang belum dikembalikan
+   $sqlUpdateTransaksi = "
+      UPDATE transaksi 
+      SET tgl_kembali='$tgl_kembali' 
+      WHERE nik='$nik' AND tgl_kembali IS NULL
+   ";
+   mysqli_query($koneksi, $sqlUpdateTransaksi);
+
+   // Commit transaksi
+   mysqli_commit($koneksi);
+
+   // Set pesan sukses
+   $_SESSION['msg']['succses'] = "Buku peminjaman <b>" . $nik . "</b> berhasil dikembalikan!";
+   unset($_SESSION['value']);
+   header('location: ../../?page=tr_pinjamdata');
+   exit();
+
+?>

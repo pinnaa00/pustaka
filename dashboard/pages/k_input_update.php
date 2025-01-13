@@ -19,7 +19,7 @@ $data = mysqli_fetch_array($q);
                 <div class="panel-body">
                     <?php
                                         if(isset($_SESSION['msg'] ['error'])){
-                                            echo $_SESSION['msg'] ['error'];
+                                           echo '<span class="text-danger">' . $_SESSION['msg']['error'] . '</span>';
                                         }
                                         ?>
                     <?php

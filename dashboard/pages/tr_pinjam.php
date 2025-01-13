@@ -36,7 +36,7 @@
                                     class="form-control" value="<?php echo $_SESSION['value']['nik'] ?? ''; ?>"
                                     onkeyup="showName(this.value)">
                             </div>
-                            <?php echo $_SESSION['msg']['nik'] ?? ''; // INI MODERN, LEBIH RINGKAS. KALAU PAHAM YA BGS(D)  ?>
+                            <?php if (isset($_SESSION['msg']['nik'])) echo '<div class="text-danger">' . $_SESSION['msg']['nik'] . '</div>'; ?>
                         </div>
 
                         <div class="form-group">
@@ -50,7 +50,7 @@
                             <input name="tgl_pinjam" id="tgl_pinjam" type="date"
                                 class="form-control <?php echo isset($_SESSION['msg']['tgl_pinjam']) ? : ''; ?>"
                                 value="<?php echo $_SESSION['value']['tgl_pinjam'] ?? ''; ?>" />
-                            <?php echo $_SESSION['msg']['tgl_pinjam'] ?? ''; ?>
+                            <?php if (isset($_SESSION['msg']['tgl_pinjam'])) echo '<div class="text-danger">' . $_SESSION['msg']['tgl_pinjam'] . '</div>'; ?>
                         </div>
                         <div class="text-end mt-3">
                             <button type="submit" name="submit" class="btn btn-primary me-2">Submit</button>
@@ -92,7 +92,7 @@
                                     <div class="input-group">
                                         <input readonly type="text" class="form-control"
                                             placeholder="Judul akan muncul disini" name="title<?php echo $i; ?>"
-                                            id="judulBuku<?php echo $i; ?>"
+                                            id="judul<?php echo $i; ?>"
                                             value="<?php echo $_SESSION['value']["judul$i"] ?? ($buku[$i - 1]['title'] ?? ''); ?>" />
                                     </div>
                                 </div>

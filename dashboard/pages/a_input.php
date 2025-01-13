@@ -27,7 +27,7 @@
                                     <input name="nik" type="text" class="form-control" placeholder="Masukkan NIK">
                                     <?php
                                         if(isset($_SESSION['msg'] ['nik'])){
-                                            echo $_SESSION['msg'] ['nik'];
+                                            echo '<span class="text-danger">' . $_SESSION['msg']['nik'] . '</span>';
                                         }
                                         ?>
                                 </div>
@@ -36,7 +36,7 @@
                                     <input name="nama" type="text" class="form-control" placeholder="Masukkan Name">
                                     <?php
                                         if(isset($_SESSION['msg'] ['nama'])){
-                                            echo $_SESSION['msg'] ['nama'];
+                                            echo '<span class="text-danger">' . $_SESSION['msg']['nama'] . '</span>';
                                         }
                                         ?>
                                 </div>
@@ -45,7 +45,7 @@
                                     <input name="nohp" type="number" class="form-control" placeholder="MasukkanNo Hp">
                                     <?php
                                         if(isset($_SESSION['msg'] ['nohp'])){
-                                            echo $_SESSION['msg'] ['nohp'];
+                                            echo '<span class="text-danger">' . $_SESSION['msg']['nohp'] . '</span>';
                                         }
                                         ?>
                                 </div>
@@ -56,7 +56,7 @@
                                     <input name="email" type="email" class="form-control" placeholder="Masukkan Email">
                                     <?php
                                         if(isset($_SESSION['msg'] ['email'])){
-                                            echo $_SESSION['msg'] ['email'];
+                                            echo '<span class="text-danger">' . $_SESSION['msg']['email'] . '</span>';
                                         }
                                         ?>
                                 </div>
@@ -65,16 +65,16 @@
                                     <input name="alamat" type="text" class="form-control" placeholder="Masukkan Alamat">
                                     <?php
                                         if(isset($_SESSION['msg'] ['alamat'])){
-                                            echo $_SESSION['msg'] ['alamat'];
+                                            echo '<span class="text-danger">' . $_SESSION['msg']['alamat'] . '</span>';
                                         }
                                         ?>
                                 </div>
                                 <div class="form-group">
                                     <label>FOTO</label>
-                                    <input name="foto" type="file" class="form-control">
+                                    <input name="foto" type="file" class="form-control" accept=".jpg, .png , .jpeg">
                                     <?php
                                         if(isset($_SESSION['msg'] ['foto'])){
-                                            echo $_SESSION['msg'] ['foto'];
+                                            '<span class="text-danger">' . $_SESSION['msg']['foto'] . '</span>';
                                         }
                                         ?>
                                 </div>

@@ -11,7 +11,7 @@
                     <div class="panel-body">
                         <?php
                                         if(isset($_SESSION['msg'] ['error'])){
-                                            echo $_SESSION['msg'] ['error'];
+                                            echo '<span class="text-danger">' . $_SESSION['msg']['error'] . '</span>';
                                         }
                                         ?>
                         <?php
@@ -28,7 +28,7 @@
                                         <input class="form-control" placeholder="Masukkan Kode" name="kode" type="text">
                                         <?php
                                         if(isset($_SESSION['msg'] ['kode'])){
-                                            echo $_SESSION['msg'] ['kode'];
+                                            echo '<span class="text-danger">' . $_SESSION['msg']['kode'] . '</span>';
                                         }
                                         ?>
                                     </div>
@@ -37,7 +37,7 @@
                                         <input class="form-control" placeholder="Masukkan Nama" name="nama" type="text">
                                         <?php
                                         if(isset($_SESSION['msg'] ['nama'])){
-                                            echo $_SESSION['msg'] ['nama'];
+                                            echo'<span class="text-danger">' . $_SESSION['msg']['nama'] . '</span>';
                                         }
                                         ?>
                                     </div>

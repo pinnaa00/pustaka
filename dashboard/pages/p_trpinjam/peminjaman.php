@@ -80,21 +80,17 @@ if (!empty($_SESSION['msg'])) {
 
 /// Mulai transaksi
 mysqli_autocommit($koneksi, false);
-try {
+
     $queryTransaksi = "INSERT INTO transaksi (id, nik, tgl_pinjam, tgl_kembali) 
                         VALUES (NULL, '$nik', '$tgl_pinjam', NULL)";
-    if (!mysqli_query($koneksi, $queryTransaksi)) {
-        throw new Exception(mysqli_error($koneksi));
-    }
-
+    mysqli_query($koneksi, $queryTransaksi) ;
+    
     $idTransaksi = mysqli_insert_id($koneksi);
     foreach ($daftarBuku as $buku) {
         $buku = $buku['kode'];
         $queryDetail = "INSERT INTO detail_transaksi (id, id_transaksi, nik, kode_buku) 
                         VALUES (NULL, '$idTransaksi', '$nik', '$buku')";
-        if (!mysqli_query($koneksi, $queryDetail)) {
-            throw new Exception(mysqli_error($koneksi));
-        }
+        mysqli_query($koneksi, $queryDetail);
     }
 
     mysqli_commit($koneksi);
@@ -102,9 +98,3 @@ try {
     unset($_SESSION['value']);
     header('location: ../../?page=tr_pinjam');
     exit();
-} catch (Exception $e) {
-    mysqli_rollback($koneksi);
-    $_SESSION['msg']['general'] = "Terjadi kesalahan: " . $e->getMessage();
-    header('location: ../../?page=tr_pinjam');
-    exit();
-}

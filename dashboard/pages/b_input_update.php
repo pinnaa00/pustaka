@@ -114,7 +114,8 @@ $data = mysqli_fetch_array($q);
                                     <label>Cover</label>
                                     <img src="pages/p_buku/image/<?= $data['cover'] ?>" alt="cover"
                                         style="width: 100px; height: auto;">
-                                    <input value="<?= $data['cover']?>" name="cover" type="file" class="form-control">
+                                    <input value="<?= $data['cover']?>" name="cover" type="file" class="form-control"
+                                        accept=".jpg, .png , .jpeg">
                                 </div>
                             </div>
                             <div class="form-group">

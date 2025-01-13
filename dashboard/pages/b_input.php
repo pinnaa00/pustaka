@@ -36,7 +36,7 @@ $selectKategori = mysqli_query($koneksi, $kategori);
                                     <input class="form-control" placeholder="Masukkan Kode" name="kode">
                                     <?php
                                     if (isset($_SESSION['msg']['kode'])) {
-                                        echo $_SESSION['msg']['kode'];
+                                        echo '<span class="text-danger">' . $_SESSION['msg']['kode'] . '</span>';
                                     }
                                     ?>
                                 </div>
@@ -45,8 +45,7 @@ $selectKategori = mysqli_query($koneksi, $kategori);
                                     <input class="form-control" placeholder="Masukkan ISBN" name="isbn">
                                     <?php
                                     if (isset($_SESSION['msg']['isbn'])) {
-                                        echo $_SESSION['msg']['isbn'];
-                                    }
+                                        echo '<span class="text-danger">' . $_SESSION['msg']['isbn'] . '</span>';                                    }
                                     ?>
                                 </div>
                                 <div class="form-group">
@@ -54,7 +53,7 @@ $selectKategori = mysqli_query($koneksi, $kategori);
                                     <input class="form-control" type="number" placeholder="Masukkan Year" name="tahun">
                                     <?php
                                     if (isset($_SESSION['msg']['tahun'])) {
-                                        echo $_SESSION['msg']['tahun'];
+                                        echo '<span class="text-danger">' . $_SESSION['msg']['tahun'] . '</span>';
                                     }
                                     ?>
                                 </div>
@@ -65,7 +64,7 @@ $selectKategori = mysqli_query($koneksi, $kategori);
                                     <input class="form-control" placeholder="Masukkan Judul" name="judul">
                                     <?php
                                     if (isset($_SESSION['msg']['judul'])) {
-                                        echo $_SESSION['msg']['judul'];
+                                        echo '<span class="text-danger">' . $_SESSION['msg']['kode'] . '</span>';
                                     }
                                     ?>
                                 </div>
@@ -75,7 +74,7 @@ $selectKategori = mysqli_query($koneksi, $kategori);
                                         name="nama">
                                     <?php
                                     if (isset($_SESSION['msg']['nama'])) {
-                                        echo $_SESSION['msg']['nama'];
+                                        echo '<span class="text-danger">' . $_SESSION['msg']['nama'] . '</span>';
                                     }
                                     ?>
                                 </div>
@@ -91,7 +90,7 @@ $selectKategori = mysqli_query($koneksi, $kategori);
                                     </select>
                                     <?php
                                     if (isset($_SESSION['msg']['penerbit'])) {
-                                        echo $_SESSION['msg']['penerbit'];
+                                        echo '<span class="text-danger">' . $_SESSION['msg']['penerbit'] . '</span>';
                                     }
                                     ?>
                                 </div>
@@ -109,7 +108,7 @@ $selectKategori = mysqli_query($koneksi, $kategori);
                                     </select>
                                     <?php
                                     if (isset($_SESSION['msg']['kategori'])) {
-                                        echo $_SESSION['msg']['kategori'];
+                                        echo '<span class="text-danger">' . $_SESSION['msg']['kategori'] . '</span>';
                                     }
                                     ?>
                                 </div>
@@ -122,16 +121,15 @@ $selectKategori = mysqli_query($koneksi, $kategori);
                                     </select>
                                     <?php
                                     if (isset($_SESSION['msg']['bahasa'])) {
-                                        echo $_SESSION['msg']['bahasa'];
-                                    }
+                                        echo '<span class="text-danger">' . $_SESSION['msg']['bahasa'] . '</span>';                                    }
                                     ?>
                                 </div>
                                 <div class="form-group">
                                     <label>Cover</label>
-                                    <input type="file" name="cover">
+                                    <input type="file" name="cover" accept=".jpg, .png , .jpeg">
                                     <?php
                                     if (isset($_SESSION['msg']['cover'])) {
-                                        echo $_SESSION['msg']['cover'];
+                                        echo '<span class="text-danger">' . $_SESSION['msg']['cover'] . '</span>';
                                     }
                                     ?>
                                 </div>
@@ -142,7 +140,7 @@ $selectKategori = mysqli_query($koneksi, $kategori);
                             <textarea class="form-control" rows="3" name="sinopsis"></textarea>
                             <?php
                             if (isset($_SESSION['msg']['sinopsis'])) {
-                                echo $_SESSION['msg']['sinopsis'];
+                                echo '<span class="text-danger">' . $_SESSION['msg']['sinopsis'] . '</span>';
                             }
                             ?>
                         </div>

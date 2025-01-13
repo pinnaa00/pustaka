@@ -148,9 +148,9 @@ if (isset($_REQUEST['id'])) {
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Judul</label>
                                         <div class="col-sm-9">
-                                            <input readonly type="text" class="form-control" id="judulBuku<?= $i; ?>"
+                                            <input readonly type="text" class="form-control" id="judul<?= $i; ?>"
                                                 placeholder="judul" name="judul<?= $i; ?>"
-                                                value="<?= $book[$i - 1]['judul_b'] ?? '' ?>">
+                                                value="<?= $buku[$i - 1]['judul'] ?? '' ?>">
                                         </div>
                                     </div>
                                     <?php } 

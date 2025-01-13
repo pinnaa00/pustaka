@@ -12,9 +12,9 @@
                     <div class="panel-heading">PENGEMBALIAN BUKU</div>
                     <div class="panel-body">
 
-                        <?php if (isset($_SESSION['msg']['sukses'])) { ?>
+                        <?php if (isset($_SESSION['msg']['succes'])) { ?>
                         <div class="alert alert-success ms-2 me-2" role="alert">
-                            <?php echo $_SESSION['msg']['sukses']; ?>
+                            <?php echo $_SESSION['msg']['succes']; ?>
                         </div>
                         <?php } ?>
 
@@ -30,7 +30,7 @@
                             <span
                                 class="input-group-text <?php echo (isset($_SESSION['msg']['nik'])) ? 'border-danger' : null; ?>">
                                 <i class="ri-search-line ri-20px"></i></span>
-                            <input type="text" placeholder="Search Member's NIK" name="nik"
+                            <input type="text" placeholder="Cari NIK Anggota" name="nik"
                                 class="form-control <?php echo (isset($_SESSION['msg']['nik'])) ? 'border-danger' : null; ?>"
                                 value="<?php echo (isset($_SESSION['value']['nik'])) ? $_SESSION['value']['nik'] : null; ?>"
                                 id="memberNik" onkeyup="showName(this.value)">
